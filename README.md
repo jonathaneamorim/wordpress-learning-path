@@ -1,6 +1,7 @@
 # Wordpress
 
 ## O que é o wordpress?
+
 - É um sistema de gerenciamento de conteúdo (CMS - Content Management System) que permite criar e administrar sites, blogs, lojas virtuais, e muito mais. É gratuito e de código aberto, por esse motivo, é a plataforma mais utilizada no mundo.
 - Exmplos de CMSs:
   - Wordpress - (O mais popular do mundo)
@@ -19,16 +20,19 @@
 - O wordpress foi inteiramente adaptado para práticas de SEO, mas também existem plugins de SEO
 
 ## Themes
+
 - Para criar um novo tema basta entrar na pasta de temas localizada geralmente em app/public/wp-content/themes e criar uma nova pasta para o novo tema.
 - O arquivo principal do tema será o index.php na raiz da pastas
 - Nomear tema, informações de autor e versão: Na raiz da pasta do tema criar o arquivo style.css (Muito importante ser esse nome), e no topo do documento comentar as informações principais.
+
 ```
 /*
-    Theme Name: Fictional University 
+    Theme Name: Fictional University
     Author: Jonathan
     Version: 1.0
 */
 ```
+
 - Para definir uma imagem para o tema no WP basta criar um arquivo de imagem na raiz do tema e inserir o nome de screnshot.png
 
 - Funções pré-programadas em PHP:
@@ -46,10 +50,10 @@
           <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
           <?php the_content(); ?>
           <hr>
-          <?php 
+          <?php
         }
         ?>
-      ``` 
+      ```
   - get_footer()/get_header(): Capturam o conteudo dos arquivos footer.php e header.php criados na raiz do tema. Para inseri-los em todos os posts ou paginas basta aplicar o comando get_header ou get_footer no topo e no fim do documento.
   - wp_head(): Utilizada no arquivo header.php, mais especificamente dentro da tag head, ela permite que o wordpress tenha controle total da seção head da página onde o mesmo descarrega arquivos de estilos e arquivos de plugin. Resumindo, carrega todo tipo de configuração no head da pagina.
   - wp_enqueue_style(): Esta função do WordPress é usada para adicionar arquivos CSS ao site. Recebe dois parâmetros o primeiro é o handle do arquivo ou identificador unico que será utilizado pelo wordpress, e o segundo geralmente é o get_stylesheet_uri(), o qual captura o arquivo principal de estilos da raiz do tema.
@@ -59,16 +63,18 @@
 - Arquivo functions.php: O arquivo functions.php é um arquivo privado criado na raiz do tema
 
 ## Learning Path Content
+
 - Introduction
   - Course Wordpress:
 - Basic concepts
+
   - Sintaxe básica de PHP e funcionamento básico da linguagem
     - [Documentação PHP](https://www.w3schools.com/php/)
   - Painel Wordpress, criar posts, configurar permalinks e etc
     - ![post image](git/assets/add_post.png)
       - Vermelho: Aba de posts, abaixo e acima dela é possivel ver as demais abas de outros tipos de POST, configurações e ferramentas do painel do wordpress
       - Amarelo: Visualiza todos os posts
-      - Verde: Adiciona um novo post 
+      - Verde: Adiciona um novo post
     - ![config post image](git/assets/config_post.png)
   - Post Type e principais tipos de POST (post, page, nav_menu_item)
     - IMPORTANTE: Um post também é um tipo de POST
@@ -84,7 +90,7 @@
       - Partes do modelo (Tipo de postagem: 'wp_template_part')
   - Conceito Taxonomia e principais taxonomias (Categorias, tags e taxonomias personalizadas):
     - Categorias, tags e taxonomias estão todas relacionadas e podem confundir, então como exemplo é utilizado uma página de receita.
-    - (Exemplificando) Em nosso site de receitas as categorias seriam 
+    - (Exemplificando) Em nosso site de receitas as categorias seriam
       - Café da manhã
       - Almoço
       - Jantar
@@ -95,22 +101,22 @@
       - Sobremesas
     - Tags representam outro nível de especificidade, que fornece significado ao usuário como por exemplo:
       - Chocolate
-      - Gengibre 
+      - Gengibre
       - Frango
     - A respeito das taxonomias, na verdade, Categorias e tags são exemplos de taxonomias, que são simplesmente uma forma de organizar o conteudo.
     - Taxonomias são o método de classificação de conteúdo e dados no wordpress, ao usar taxonomias é agrupado elementos semelhantes, e a taxonomia se refere a soma desses grupos, assim como a taxonomia na biologia, que classifica e descreve os seres vivos e os coloca em grupos.
     - Categorias e tags são taxonomias padrão do Wordpress, mas é possivel criar uma nova taxonomia de acordo com a necessidade.
     - Por fim existem os `termos || terms`, que são itens dentro da sua taxonomia.
   - Loop e como funciona(Uso de variáveis globais $wp_query e $post, função wp_query)
-    - Loop em Wordpress é um código PHP que é utilizado para exibir posts de acordo com critérios especificados nas tags do Loop. 
+    - Loop em Wordpress é um código PHP que é utilizado para exibir posts de acordo com critérios especificados nas tags do Loop.
     - Exemplo básico de loop
       ```
-        <?php 
+        <?php
           /*
             Primeiramente o sistema verifica se existem posts
             A função have posts é uma função do wordpress que realiza um query do banco de dados e verifica se existem posts, podendo retornar true or false dependendo do resultado
           */
-          if ( have_posts() ) { 
+          if ( have_posts() ) {
             /*
               Enquanto houver posts ele continuará renderizando item por item dos posts encontrados
             */
@@ -126,21 +132,24 @@
       ```
     - Com loop também é possivel renderizar conteudos de acordo com a categoria daquele momento, utilizando um expressão condicional IF com o método in_category('category');
   - WP_query{}:
+
     ```
       - WP_query é uma classe do wordpress que é utilizada para realizar QUERYs em banco de dados do wordpress
       - Por padrão, todos arquivos (single, index, archive, etc) possuem uma classe WP_query padrão a qual caputura algumas informações sobre
-      post_type do arquivo e posts_per_page (que por padrão é 10). 
+      post_type do arquivo e posts_per_page (que por padrão é 10).
       - A classe WP_Query possui métodos que são utilizados para renderizar posts e manipular loops, como have_posts, the_post, the_title etc
       - Essa classe pode ser alterada instanciando a mesma e passando o array de informações ($queryArrayEvent), isso fará com que a WP_Query
       padrão seja alterada para a que for criada. Por boas práticas é sempre interessante resetar a classe padrão com o método wp_reset_postdata();
-      
+
       $queryArray = array(
         'posts_per_page' => 2
       // 'category_name' => 'awards'
       );
       $homepageposts = new WP_Query($queryArray);
-    ``` 
-- Basic content 
+    ```
+
+- Basic content
+
   - Hierarquia de temas e arquivos
     - O Wordpress possue uma estrutura hierarquica bem definida
       - Para posts:
@@ -162,21 +171,23 @@
         4. archive.php: Arquivo padrão para a renderização de Taxonomias e posts personalizados
         5. index.php: Fallback Final
   - Criando e customizando menus
+
     - No Wordpress um menu é tratado como um tipo de post "nav_menu_item", eles são ligados a um menu maior chamado `nav_menu`.
     - Para criar um menu novo, basta ir no arquivo functions e configurar o novo menu a partir do método a baixo:
+
       ```
         /*
           register_nav_menu(): Registrar um menu de navegação
-          Arguments: 
+          Arguments:
             Nome para o menu específico
             Nome que aparecerá no painel de administração do wordpress
           Esse método precisa estar associado a um `add_action` com o hook (init) ou (after_setup_theme)
         */
         register_nav_menu('headerMenuLocation', 'Header Menu Location');
-        
-        
+
+
         /*
-          Após registrado basta configurá-lo no painel wp-admin e para chamá-lo basta utilizar: 
+          Após registrado basta configurá-lo no painel wp-admin e para chamá-lo basta utilizar:
             wp_nav_menu(array(
               'theme_location' => 'headerMenuLocation'
             ));
@@ -185,6 +196,7 @@
           has_nav_menu(): verificar se existe um menu
         */
       ```
+
     - Para registrar mais de um menu por vez
       ```
           function register_my_menus() {
@@ -196,7 +208,8 @@
             );
           }
           add_action( 'init', 'register_my_menus' );
-      ``` 
+      ```
+
   - Criar posts customizados
     - Como vimos anteriormente, posts na verdade são tipos especificos de elementos que indicam um certo conteudo, como uma página, uma postagem, revision, menu ou anexos.
     - No wordpress também é possivel a criação de post_types personalizados de acordo com a necessidade. Para criar um novo post_type é simples, mas, por garantia, devemos criá-lo fora do tema para que o mesmo seja utilizado a qualquer momento independente do tema presente.
@@ -208,20 +221,20 @@
       - Scripts de segurança, performance ou integrações obrigatorias
       - Automatizações internas, rotinas do time dev, etc.
       - Criar e manter post_types personalizados. <- (Nosso caso)
-    -  Para criarmos um novo post_type utilizando o Must-Use basta ir na pasta wp_content e criar uma nova pasta chamada `mu-plugins`. Dentro desta pasta basta criar um arquivo .php (para fins informativos ->) indicando o tema e a finalidade do arquivo.
-    -  Dentro dele basta inserir funções com add_action para inicializar uma função especifica.
-    -  Neste caso iremos criar um novo post_type, estão teremos um `add_action` que será acionado com o hook init:
-      ```
-        add_action('init', 'university_post_types');
-      ```
+    - Para criarmos um novo post_type utilizando o Must-Use basta ir na pasta wp_content e criar uma nova pasta chamada `mu-plugins`. Dentro desta pasta basta criar um arquivo .php (para fins informativos ->) indicando o tema e a finalidade do arquivo.
+    - Dentro dele basta inserir funções com add_action para inicializar uma função especifica.
+    - Neste caso iremos criar um novo post_type, estão teremos um `add_action` que será acionado com o hook init:
+    ```
+      add_action('init', 'university_post_types');
+    ```
     - Neste mesmo arquivo criaremos uma função para inserir novos tipos de post que se chamará `university_post_types`.
     - Dentro dessa funçao executaremos um método do wordpress chamado `register_post_type`, esse método recebe 2 parâmetros, o primeiro é o nome do post_type criado, e o segundo é um array com as informações pertinentes ao post_type:
       ```
         function university_post_types() {
           register_post_type('event', array(
             'supports' => array( // Habilita funcionalidades para o novo tipo de post, como titulo, editor e resumo (trecho)
-              'title', 
-              'editor', 
+              'title',
+              'editor',
               'excerpt'
             ),
             'rewrite' => array(
@@ -253,17 +266,222 @@
             'menu_icon' => 'dashicons-calendar'
                 ));
             }
-      ``` 
+      ```
   - Criar taxonomias customizadas
     - Assim como post_types personalizados, as taxonomias vão seguir a mesma linha de criação. Taxonomias tem a função de auxiliar na organização de conteudos de post_types com mais assertividade. Por exemplo, para um post_type 'Eventos' por exemplo, é possível que dentre esses eventos, possuam reuniões, seminários, confraternizações etc., para isso, eles são organizados em taxonomias.
-    - Para criar uma taxonomias customizada é possível criar direto no arquivo `functions.php` ou no modo "Must-Use"
-  - Plugin ACF e quando utilizar
-  - Incluir CSS e JS usando enqueue
+    - Para criar uma taxonomias customizada é possível inserí-la diretamente no arquivo `functions.php` ou no modo "Must-Use" inserindo a taxonomia no mu-plugins assim como o Custom post type.
+    - No local escolhido basta seguir essa estrutura:
+      ```
+      <?php
+        function university_taxonomy() {
+          $labels = [ // Define os parâmetros de rotulo como o nome e configuração do painel wp
+            'name' => 'Tipos de Evento',
+            'singular_name' => 'Tipo de Evento',
+            'search_items' => 'Buscar tipos',
+            'all_items' => 'Todos os tipos',
+            'edit_item' => 'Editar tipo',
+            'update_item' => 'Atualizar Tipo',
+            'add_new_item' => 'Adicionar Novo Tipo',
+            'new_item_name' => 'Novo Tipo',
+            'menu_name' => 'Tipos de Evento',
+          ];
+
+          $args = [ // Define os argumentos da nova taxonomia como, visibilidade, hierarquia, e habilitar visualização wp-blocks
+              'labels'            => $labels,
+              'public'            => true,
+              /*
+                O parâmetro 'hierarchical' define se a taxonomia será uma tag ou uma categoria
+                true = estilo categorias;
+                false = estilo tags;
+
+                Diferença entre categoria e tag:
+                    Tag: Não possui hierarquia entre os termos(itens da tag)
+                    Categoria: Pode possuir termos pai e filho
+              */
+              'hierarchical'      => true,
+              'show_admin_column' => true, // mostra coluna no admin
+              'rewrite'           => ['slug' => 'tipo-evento'], // URL: /tipo-evento/palestra
+              'show_in_rest'      => true, // importante se usar Gutenberg ou API
+          ];
+
+            /*
+              register_taxonomy é o método que efetivamente registra uma taxonomia,
+              Ela recebe 3 argumentos
+                  - Nome da taxonomia
+                  - Qual post_type essa taxonomia será associada
+                  - Argumentos da taxonomia
+            */
+            register_taxonomy('tipo_evento', ['event'], $args);
+        }
+        add_action('init', 'university_taxonomy');
+      ```
+- Plugin ACF e quando utilizar
+  - Antes de enter o que é o ACF é interessante entender o que é um plugin. Como o próprio nome já diz, um "plugin" é um "plug in", ou seja, algo que "conecta" ou "encaixa" a um sistema e atribui novas funções ao sistema, assim como um acessório.
+  - No Wordpress um plugin é um conjunto de arquivos (PHP, CSS, JS, ETC) que:
+    - Estende o que o Wordpress pode fazer
+    - Pode ser ativado ou desativado sem quebrar o site
+    - Funciona como uma peça adicional, "encaixada" ao wordpress
+  - Tendo isso em mente, podemos concluir que o os plugins podem:
+    - Criar Sliders
+    - Gerar formulários de contato
+    - Melhorar o SEO
+    - Adicionar campos personalizados (<- Nosso caso)
+    - Criar lojas virtuais
+    - Criar backups
+    - Bloquear spam
+    - etc
+  - Os plugins estão localizado na pasta `wp_content/plugins` e podem ser só um arquivo .PHP com um cabeçalho:
+    ```
+      <?php
+        /*
+        Plugin Name: Meu Plugin Simples
+        Description: Um plugin de exemplo.
+        Version: 1.0
+        Author: Seu Nome
+        */
+
+        // Código do plugin aqui
+    ``` 
+  - O ACF (Advanced Custom Fields) é um dos plugins mais pupulares do wordpress, especialmente para desenvolvedores.
+  - O ACF Permite que sejam criados campos personalizados (Custom Fields) facilmente, sem precisar escrever muito código. Esses campos podem ser adicionados a:
+    - Posts
+    - Pages
+    - Custom post types
+    - Users
+    - Termos de Taxonomias
+    - Comentários
+    - Opções globais do site
+  - Com ele é possivel adicionar:
+    - Texto
+    - Area de texto (textarea)
+    - imagem
+    - Galeria
+    - Repeater (campos repetíveis)
+    - Select, Checkbox, Radio
+    - Arquivo
+    - Google Maps
+    - Relacionamento entre posts
+    - etc
+  - Usar o ACF quando:
+    - Precisa adicionar informações extras aos posts
+    - Controles de conteudo de sites personalizados
+    - Paineis administrativos amigáveis para o cliente ou outro editor não-dev
+    - Quando trabalhar com custom_types
+  - Também é possível importar e exportar campos personalizados de outros projetos a partir do ACF.
+- Incluir CSS e JS usando enqueue
+  - Para incluir JS e CSS no wordpress, é necessário realizar algumas configurações para que os mesmos sejam ativados e chamados ao carregar a página.
+    - Primeiramente é necessário que possuam arquivos JS ou CSS presentes na pasta do tema. Após isso basta inserir o seguinte modelo no arquivo `functions.php`:
+      ```
+        <?php
+          /*
+            add_action: Executa uma função em um ponto específico do carregamento do WordPress.
+            Sintaxe: add_action('nome_do_hook', 'nome_da_função');
+            Aqui usamos o hook 'wp_enqueue_scripts' para carregar os scripts e estilos no front-end.
+          */
+          add_action('wp_enqueue_scripts', 'university_files');
+
+          /*
+              Função que carrega os arquivos CSS e JavaScript no tema.
+              - wp_enqueue_script(): Adiciona arquivos JS ao front-end.
+              - wp_enqueue_style(): Adiciona arquivos CSS ao front-end.
+              - get_theme_file_uri(): Retorna a URL de um arquivo localizado na pasta do tema.
+          */
+          function university_files() {
+              wp_enqueue_script('main_university_javascript', get_theme_file_uri('/build/index.js'), array('jquery'), '1.0', true);
+              // Parâmetros: (identificador, caminho do arquivo, dependências, versão, carregar no footer? true/false)
+              
+              wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+              wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+              wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css'));
+              wp_enqueue_style('university_extra_styles', get_theme_file_uri('/build/index.css'));
+          } 
+      ``` 
+    - Após isso os arquivos serão carregados no header ou footer da página conforme configurado
 - Medium content
   - WP_QUERY e Query loop (Como o wordpress puxa os posts)
+    - Como explicado anteriormente, o WordPress possui uma classe global padrão chamada WP_Query. Essa classe está presente em todos os arquivos e é configurada de acordo com o contexto do arquivo em que é utilizada.
+    - Para renderizar posts, não é necessário instanciar a classe WP_Query manualmente, pois sua configuração padrão já está ativa, precisando apenas chamar seus métodos:
+      - have_posts()
+      - the_post()
+      - the_title()
+      - the_content()
+      - the_permalink()
+      - the_time()
+      - the_author()
+      - etc
+      ```
+        // Atenção, por padrão, quando esses comandos são utilizados na homepage, o WordPress trará os 10 últimos posts cadastrados no banco de dados.
+        <?php
+          while(have_posts()) {
+            the_post(); ?>
+            <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+            <?php the_content(); ?>
+            <hr>
+            <?php
+          }
+        ?>
+      ``` 
+    - Mas em alguns casos se faz necessário que a consulta seja realizada referenciando outro post, por exemplo, na tela de front-page quero exibir 3 itens do `custom type - Evento` e 3 itens do `post_type - post`, nesse caso, é possível utilizar a classe WP_Query manualmente, instanciando-a, e passando com parâmetro um array indicando o tipo de dado que será trazido na consulta.
+    - A classe `WP_Query` é utilizada para realizar consultas no banco de dados e trazer informações de acordo com parâmetros pré-estabelecidos.
+      ```
+        <?php
+          
+            $queryArray = array(
+              'posts_per_page' => 2
+              // 'category_name' => 'awards'
+            );
+            
+            /*
+              - WP_Query é a classe utilizada para realizar consultas ao banco de dados no WordPress.
+              - Por padrão, todos arquivos (single, index, archive, etc) possuem uma classe WP_query padrão a qual caputura algumas informações sobre
+              post_type do arquivo e posts_per_page (que por padrão é 10). 
+              - A classe WP_Query possui métodos que são utilizados para renderizar posts e manipular loops, como have_posts, the_post, the_title etc
+              - Essa classe pode ser alterada instanciando a mesma e passando o array de informações ($queryArrayEvent), isso fará com que a WP_Query
+              padrão seja alterada para a que for criada. Por boas práticas é sempre interessante resetar a classe padrão com o método wp_reset_postdata();
+            */
+            $homepageposts = new WP_Query($queryArray);
+
+            while($homepageposts->have_posts()) {
+              $homepageposts->the_post(); ?>
+                <div class="event-summary">
+                  <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink(); ?>">
+                    <span class="event-summary__month"><?php the_time('M') ?></span>
+                    <span class="event-summary__day"><?php the_time('d') ?></span>
+                  </a>
+                  <div class="event-summary__content">
+                    <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
+                    <p>
+                      <?php 
+                        /*
+                          A diferença de utilizar o get_the_excerpt e the_excerpt():
+                            the_excerpt(): imprime o conteúdo já com as tags HTML (ex: <p>); 
+                            get_the_excerpt() retorna apenas o texto
+                            O mesmo se aplica para os demais métodos
+                        */
+                        if(has_excerpt()) {
+                          echo get_the_excerpt();
+                        } else {
+                          echo wp_trim_words(get_the_content(), 18);
+                        }
+                      ?>
+                      <a href="<?php echo the_permalink(); ?>" class="nu gray">Read more</a></p>
+                  </div>
+                </div>
+              <?php
+            }
+            /*
+              Boa prática sempre resetar
+            */
+            wp_reset_postdata();
+          ?>
+      ``` 
+    - Uma boa prática é sempre utilizar o método `wp_reset_postdata()` para resetar o valor da classe global, Isso garante que o loop global continue funcionando normalmente nas demais partes do código.
+    - O método de renderização do conteúdo utiliza o while (have_posts()) para exibir os posts enquanto houver conteúdo disponível.
+    - Por padrão, o WordPress realiza a consulta em ordem decrescente de data de publicação, ou seja, os posts mais recentes são exibidos primeiro. 
   - Como salvar um metadado customizado em um post (custom field)
   - O que são e como acessar os metadados de um post (e custom fields)
-- Advanced content 
+- Advanced content
   - Ajax Function wordpress
   - Gutenberg Blocks(outra maneira de fazer temas componentizados no wordpress)
 - Extra content
@@ -271,7 +489,9 @@
   - Boas práticas de wordpress
 
 ## Documentações
+
 - Documentação Oficial:
   - [Documentação oficial do wordpress](https://developer.wordpress.org/).
 - Documentação Pessoal:
-  - 
+  -
+```
