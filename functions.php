@@ -1,5 +1,4 @@
 <?php
-
 /*
     Função para inserir a estilização na página.
     wp_enqueue_style: Insere os arquivos CSS, bootstrap e fontes personalizadas na página
@@ -17,9 +16,23 @@ function university_files() {
 }
 
 function university_features() {
-    add_theme_support('title_tag');
-}
 
+    /*
+        register_nav_menu(): Registrar um menu de navegação
+        Arguments: 
+            Nome para o menu específico
+            Nome que aparecerá no painel de administração do wordpress
+
+    */
+    // register_nav_menu('headerMenuLocation', 'Header Menu Location');
+    // register_nav_menu('footerExploreMenuLocation', 'Footer Explore Menu Location');
+    // register_nav_menu('footerLearnMenuLocation', 'Footer Learn Menu Location');
+
+    /*
+        https://usablewp.com/learn-wordpress/home-page/how-to-add-theme-support-for-the-title-tag/
+    */
+    add_theme_support( 'title-tag' );
+}
 /*
     add_action: Indica que o sistema vai rodar certas funções em determinados tempos de execução do código
     estrutura > add_action('<hook ou momento de execução>', '<função que será executada>').

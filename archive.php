@@ -1,25 +1,44 @@
 <?php
-  /*
-    Arquivo Mais genêrico e o ultimo na hierarquia de arquivos. Ele é um "fallback", ou seja, 
-    é usando quando nenhum outro template mais especifico está disponivel.
-    Por exemplo: Se você acessa uma página de autor (/author/joao) e não existe author.php, nem archive.php,
-    o WordPress cai de volta para o index.php.
-  */
+    /*
+        Arquivo de template utilizado para exibir listagens de POSTS ARQUIVADOS como 
+        - Categorias
+        - Tags
+        - Autor
+        - Data
+        - Posts Personalizados (IMPORTANTE)
+        - Taxonomias personalizadas
+    */
 
-  get_header(); // Captura o header do site
+    get_header();
 ?>
     <div class="page-banner">
         <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri("/images/ocean.jpg"); ?>)"></div>
         <div class="page-banner__content container container--narrow">
-            <h1 class="page-banner__title">Welcome to our blog!</h1>
+            <h1 class="page-banner__title">
+                <?php 
+                    the_archive_title(); // Captura o titulo do post arquvado 
+                ?>
+            </h1>
             <div class="page-banner__intro">
-                <p>Keep up with our latest news</p>
+                <p>
+                    <?php 
+                        /*
+                            Captura a descrição do post arquivado
+                            A descrição será trazida a partir do campo descrição de cada POST ARQUIVO no painel 
+                        */
+                        the_archive_description();
+                    ?>
+                </p>
             </div>
         </div>
     </div>
 
     <div class="container container--narrow page-section">
       <?php 
+
+        /*
+            Renderiza o POST ARQUIVADO
+        */
         while(have_posts()) {
           the_post(); ?>
             <div class=post-item>
@@ -37,10 +56,10 @@
               </div>
             </div>
           <?php }
-        echo paginate_links();
+        echo paginate_links(); // Método de paginação padrão do wordpress
       ?>
     </div>
 
 <?php
-  get_footer(); // Captura o rodapé do site
+  get_footer(); 
 ?>

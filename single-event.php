@@ -1,7 +1,7 @@
 <?php
     /*
-        Arquivo de modelo de exibição de posts
-        Arquivo destinado a estrutura padrão dos posts UNICOS do site
+        Arquivo de modelo de exibição de posts do tipo: Event
+        Arquivo destinado a estrutura padrão dos eventos do site (Apenas de um evento)
     */
 
     get_header();
@@ -22,9 +22,13 @@
             
         <div class="metabox metabox--position-up metabox--with-home-link">
             <p>
-                <a class="metabox__blog-home-link" href=" <?php echo site_url('/blog'); ?> "><i class="fa fa-home" aria-hidden="true"></i> 
-                    Blog Home
-                </a> <span class="metabox__main"> Posted by <?php the_author(); ?> on <?php the_time('j/n/y'); ?> in <?php echo get_the_category_list(' '); ?></span>
+                <a class="metabox__blog-home-link" href=" <?php echo get_post_type_archive_link('event'); ?> "><i class="fa fa-home" aria-hidden="true"></i> 
+                    Events Home
+                </a> <span class="metabox__main">
+                    <?php 
+                        the_title();
+                    ?>
+                </span>
             </p>
         </div>  
 
