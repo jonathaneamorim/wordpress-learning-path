@@ -7,6 +7,31 @@
 */
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
+add_action('pre_get_posts', 'university_adjust_queries');
+
+
+function university_adjust_queries($query) {
+
+    if(!is_admin() AND is_post_type_archive('program') AND is_main_query()) {
+        $query->set('orderby', 'title');
+        $query->set('order', 'ASC');
+        $query->set('posts_per_page', -1); // Listar todos de uma vez, sem paginação
+    }
+
+    $today = date('Ymd');
+
+    if(!is_admin() AND is_post_type_archive('event') AND $query->is_main_query()) {
+        $query->set('meta_key', 'event_date');
+        $query->set('orderby', 'meta_value_num');
+        $query->set('order', 'ASC');
+        $query->set('meta_query', [
+            'key' => 'event_date',
+            'compare' => '>=',
+            'value' => $today,
+            'type' => 'numeric'
+        ]);
+    }
+}
 
 /*
     Função que carrega os arquivos CSS e JavaScript no tema.
@@ -42,4 +67,15 @@ function university_features() {
         https://usablewp.com/learn-wordpress/home-page/how-to-add-theme-support-for-the-title-tag/
     */
     add_theme_support( 'title-tag' );
+
+    // Habilitar thumbnails dos posts (ainda é necessário habilitar no post especifico)
+    add_theme_support( 'post-thumbnails' );
+
+    /*
+        Nativamente, ao inserir uma nova thumbnail o wordpress gera 5 imagens redimensionadas da imagem para
+        alocá-la em telas especificas.
+        O Comando add_image_size() adiciona mais tamanhos para a imagem
+    */
+    add_image_size('professorLandscape', 400, 260, true);
+    add_image_size('professorPortrait', 480, 650, true);
 }

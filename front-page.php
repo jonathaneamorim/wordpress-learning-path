@@ -15,7 +15,7 @@
         <h1 class="headline headline--large">Welcome!</h1>
         <h2 class="headline headline--medium">We think you&rsquo;ll like it here.</h2>
         <h3 class="headline headline--small">Why don&rsquo;t you check out the <strong>major</strong> you&rsquo;re interested in?</h3>
-        <a href="#" class="btn btn--large btn--blue">Find Your Major</a>
+        <a href="<? echo get_post_type_archive_link('program') ?>" class="btn btn--large btn--blue">Find Your Major</a>
       </div>
     </div>
 
@@ -25,14 +25,46 @@
           <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
 
           <?php
+            $today = date('Ymd'); // Variável que captura a data atual
+
             /*
               - A variável "$queryArrayEvent" é responsável por armazenar o array de configuração do WP_Query
               - A variável $homepageEvents armazena o objeto de Query do wordpress, tal qual recebe o valor de 
               $queryArrayEvent que estabelece os parâmetros de consulta
             */
             $queryArrayEvent = array(
-              'posts_per_page' => 2, // Esse item do array indica que a consulta será realizada e serão trazidos apenas os ultimos 2 posts realizados
-              'post_type' => 'event' // Define que o tipo de post trazido na consulta será o post do tipo event
+              /*
+                  O valor -1 indica que o WordPress trará todos os posts que obedecem à condição de post_type, 
+                  sem limitar a quantidade de resultados.
+              */
+              'posts_per_page' => 2,  
+              'post_type' => 'event',     // Define que a consulta trará posts do tipo 'event'
+              
+              /*
+                Define o metadado 'event_date' como base para ordenação e/ou filtro dos resultados
+              */
+              'meta_key' => 'event_date',
+              
+              /*
+                Define o critério de ordenação da consulta.
+                Exemplos: 'title', 'rand'. Padrão: 'post_date'.
+                Neste caso, os resultados serão ordenados com base no valor numérico do metadado 'event_date'.
+              */
+              'orderby' => 'meta_value_num',
+              /*
+                Define a direção da ordenação: 
+                  'ASC' para crescente, 'DESC' para decrescente
+              */
+              'order' => 'ASC',
+              'meta_query' => [
+                [
+                  'key' => 'event_date',
+                  'compare' => '>=',
+                  'value' => $today,
+                  'type' => 'numeric'
+                ],
+                
+              ]    
             );
 
             /*
@@ -54,8 +86,15 @@
               $homepageEvents->the_post(); ?>
             <div class="event-summary">
               <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-                <span class="event-summary__month"><?php the_time('M'); ?></span>
-                <span class="event-summary__day"><?php the_time('d'); ?></span>
+                <span class="event-summary__month">
+                  <?php 
+                    $eventDate = new DateTime(get_field('event_date'));
+                    echo $eventDate->format('M');
+                  ?></span>
+                <span class="event-summary__day">
+                  <?php 
+                    echo $eventDate->format('d');
+                  ?></span>
               </a>
               <div class="event-summary__content">
                 <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
@@ -95,7 +134,7 @@
           <?php
           
             $queryArray = array(
-              'posts_per_page' => 2
+              'posts_per_page' => 2 // Esse item do array indica que a consulta será realizada e serão trazidos apenas os ultimos 2 posts realizados
               // 'category_name' => 'awards'
             );
             

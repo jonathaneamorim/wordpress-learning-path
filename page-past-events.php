@@ -9,11 +9,11 @@
         <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri("/images/ocean.jpg"); ?>)"></div>
         <div class="page-banner__content container container--narrow">
             <h1 class="page-banner__title">
-                All Events
+                Past Events
             </h1>
             <div class="page-banner__intro">
                 <p>
-                    Se what is going on in our world.
+                    A recap of our past events.
                 </p>
             </div>
         </div>
@@ -22,8 +22,52 @@
     <div class="container container--narrow page-section">
       <?php 
 
-        while(have_posts()) {
-            the_post(); ?>
+        $today = date('Ymd');
+
+        $queryArray = array(
+            /*
+                O valor -1 indica que o WordPress trará todos os posts que obedecem à condição de post_type, 
+                sem limitar a quantidade de resultados.
+            */
+            'post_type' => 'event',     // Define que a consulta trará posts do tipo 'event'
+            /*
+                Paged: Esse parâmetro é utilizado para indicar em qual página de uma consulta você está.
+                A função "get_query_var('paged', 1)" associada busca o valor da variável de consulta chamada 'paged' que 
+                normalmente é passada na URL (ex: ?paged=2), se ela não estiver definida, o segundo parâmtro será usado
+                como valor padrão (situação útil para quando ainda não houve paginações)  
+            */
+            'paged' => get_query_var('paged', 1),
+
+            /*
+            Define o metadado 'event_date' como base para ordenação e/ou filtro dos resultados
+            */
+            'meta_key' => 'event_date',
+            
+            /*
+            Define o critério de ordenação da consulta.
+            Exemplos: 'title', 'rand'. Padrão: 'post_date'.
+            Neste caso, os resultados serão ordenados com base no valor numérico do metadado 'event_date'.
+            */
+            'orderby' => 'meta_value_num',
+            /*
+            Define a direção da ordenação: 
+                'ASC' para crescente, 'DESC' para decrescente
+            */
+            'order' => 'ASC',
+            'meta_query' => [
+            [
+                'key' => 'event_date',
+                'compare' => '<',
+                'value' => $today,
+                'type' => 'numeric'
+            ],
+            ]    
+        );
+
+        $pastEvents = new WP_Query($queryArray);
+
+        while($pastEvents->have_posts()) {
+            $pastEvents->the_post(); ?>
                 <div class="event-summary">
                 <a class="event-summary__date t-center" href=" <?php the_permalink(); ?> ">
                         <span class="event-summary__month">
@@ -54,13 +98,13 @@
         /*
             método que insere uma paginação automática na listagem de posts
         */  
-        echo paginate_links();
+        echo paginate_links([
+            'total' => $pastEvents->max_num_pages
+        ]);
+
+        wp_reset_postdata();
+        
       ?>
-
-      <hr class="section-break" />
-
-      <p>Looking for a recap of past events? <a href="<?php echo site_url('/past-events'); ?>">Check out our past events archive</a>.</p>
-
     </div>
 
 <?php

@@ -42,7 +42,7 @@
     - the_title(): Indica o titulo do post.
     - the_content(): Indica o conteudo do post.
     - the_permalink(): Retorna o link de acesso ao post especifico, sendo utilizado dentro da tag `<a>`;
-      ```
+      ```php
       // Atenção, por padrão o wordpress quando esse comando for utilizado na homepage tratá do banco de dados os 10 ultimos posts criados.
       <?php
         while(have_posts()) {
@@ -110,7 +110,7 @@
   - Loop e como funciona(Uso de variáveis globais $wp_query e $post, função wp_query)
     - Loop em Wordpress é um código PHP que é utilizado para exibir posts de acordo com critérios especificados nas tags do Loop.
     - Exemplo básico de loop
-      ```
+      ```php
         <?php
           /*
             Primeiramente o sistema verifica se existem posts
@@ -132,8 +132,7 @@
       ```
     - Com loop também é possivel renderizar conteudos de acordo com a categoria daquele momento, utilizando um expressão condicional IF com o método in_category('category');
   - WP_query{}:
-
-    ```
+    ```php
       - WP_query é uma classe do wordpress que é utilizada para realizar QUERYs em banco de dados do wordpress
       - Por padrão, todos arquivos (single, index, archive, etc) possuem uma classe WP_query padrão a qual caputura algumas informações sobre
       post_type do arquivo e posts_per_page (que por padrão é 10).
@@ -174,8 +173,7 @@
 
     - No Wordpress um menu é tratado como um tipo de post "nav_menu_item", eles são ligados a um menu maior chamado `nav_menu`.
     - Para criar um menu novo, basta ir no arquivo functions e configurar o novo menu a partir do método a baixo:
-
-      ```
+      ```php
         /*
           register_nav_menu(): Registrar um menu de navegação
           Arguments:
@@ -198,7 +196,7 @@
       ```
 
     - Para registrar mais de um menu por vez
-      ```
+      ```php
           function register_my_menus() {
             register_nav_menus(
               array(
@@ -224,12 +222,12 @@
     - Para criarmos um novo post_type utilizando o Must-Use basta ir na pasta wp_content e criar uma nova pasta chamada `mu-plugins`. Dentro desta pasta basta criar um arquivo .php (para fins informativos ->) indicando o tema e a finalidade do arquivo.
     - Dentro dele basta inserir funções com add_action para inicializar uma função especifica.
     - Neste caso iremos criar um novo post_type, estão teremos um `add_action` que será acionado com o hook init:
-    ```
+    ```php
       add_action('init', 'university_post_types');
     ```
     - Neste mesmo arquivo criaremos uma função para inserir novos tipos de post que se chamará `university_post_types`.
     - Dentro dessa funçao executaremos um método do wordpress chamado `register_post_type`, esse método recebe 2 parâmetros, o primeiro é o nome do post_type criado, e o segundo é um array com as informações pertinentes ao post_type:
-      ```
+      ```php
         function university_post_types() {
           register_post_type('event', array(
             'supports' => array( // Habilita funcionalidades para o novo tipo de post, como titulo, editor e resumo (trecho)
@@ -271,7 +269,7 @@
     - Assim como post_types personalizados, as taxonomias vão seguir a mesma linha de criação. Taxonomias tem a função de auxiliar na organização de conteudos de post_types com mais assertividade. Por exemplo, para um post_type 'Eventos' por exemplo, é possível que dentre esses eventos, possuam reuniões, seminários, confraternizações etc., para isso, eles são organizados em taxonomias.
     - Para criar uma taxonomias customizada é possível inserí-la diretamente no arquivo `functions.php` ou no modo "Must-Use" inserindo a taxonomia no mu-plugins assim como o Custom post type.
     - No local escolhido basta seguir essa estrutura:
-      ```
+      ```php
       <?php
         function university_taxonomy() {
           $labels = [ // Define os parâmetros de rotulo como o nome e configuração do painel wp
@@ -331,7 +329,7 @@
     - Bloquear spam
     - etc
   - Os plugins estão localizado na pasta `wp_content/plugins` e podem ser só um arquivo .PHP com um cabeçalho:
-    ```
+    ```php
       <?php
         /*
         Plugin Name: Meu Plugin Simples
@@ -371,7 +369,7 @@
 - Incluir CSS e JS usando enqueue
   - Para incluir JS e CSS no wordpress, é necessário realizar algumas configurações para que os mesmos sejam ativados e chamados ao carregar a página.
     - Primeiramente é necessário que possuam arquivos JS ou CSS presentes na pasta do tema. Após isso basta inserir o seguinte modelo no arquivo `functions.php`:
-      ```
+      ```php
         <?php
           /*
             add_action: Executa uma função em um ponto específico do carregamento do WordPress.
@@ -410,7 +408,7 @@
       - the_time()
       - the_author()
       - etc
-      ```
+      ```php
         // Atenção, por padrão, quando esses comandos são utilizados na homepage, o WordPress trará os 10 últimos posts cadastrados no banco de dados.
         <?php
           while(have_posts()) {
@@ -424,7 +422,7 @@
       ``` 
     - Mas em alguns casos se faz necessário que a consulta seja realizada referenciando outro post, por exemplo, na tela de front-page quero exibir 3 itens do `custom type - Evento` e 3 itens do `post_type - post`, nesse caso, é possível utilizar a classe WP_Query manualmente, instanciando-a, e passando com parâmetro um array indicando o tipo de dado que será trazido na consulta.
     - A classe `WP_Query` é utilizada para realizar consultas no banco de dados e trazer informações de acordo com parâmetros pré-estabelecidos.
-      ```
+      ```php
         <?php
           
             $queryArray = array(
@@ -479,8 +477,53 @@
     - Uma boa prática é sempre utilizar o método `wp_reset_postdata()` para resetar o valor da classe global, Isso garante que o loop global continue funcionando normalmente nas demais partes do código.
     - O método de renderização do conteúdo utiliza o while (have_posts()) para exibir os posts enquanto houver conteúdo disponível.
     - Por padrão, o WordPress realiza a consulta em ordem decrescente de data de publicação, ou seja, os posts mais recentes são exibidos primeiro. 
-  - Como salvar um metadado customizado em um post (custom field)
-  - O que são e como acessar os metadados de um post (e custom fields)
+  
+  - Como salvar um metadado customizado em um post (custom field)? o que são e como acessar os metadados de um post (e custom fields):
+    - Antes de explicar como salvar um metadado em um post precisamos entender qual a diferença entre um metadado e um custom field:
+      - Em um contexto geral, os dois termos se traram da mesma coisa, alterando apenas sua localização:
+        - Custom field (Campo customizado {Informação adicional}): Uso exclusivo do painel de administração do wordpress (wp-admin). Vamos supor que utilizando o ACF nós geramos um campo de data e alocamos ele para o post_type 'event'. Nesse caso, ao inserir um novo evento, a data estará na tela de inserção para ser inserida e facilitar a vida dos administradores e moderadores do site.
+        - Metadado: É a forma como o wordpress armazena dados adicionais de um post, comentário ou termo. 
+          - Quando é criado um novo custom field o wordpress armazena o mesmo na tabela chamada "wp_postmeta"
+          - A informação pode ser acessada por funções como:
+            - `get_post_meta()`: Captura a informação do metadado
+            - `update_post_meta()`: Atualiza a informação do metadado
+            - `delete_post_meta`: Remove as informações de um metadado
+            - OBS: Todos esses métodos precisam receber o id do post, o metadado e o valor de alteração (caso houver);
+    - Agora, já esclarecido qual a diferença entre custom field e metadado, vamos entender, como criar um custom field?
+      - É possível criar o custom field manualmente através da função `add_meta_box()` do wordpress, ele pode ser criado no formato `"Must Use"` ou diretamente no `functions.php`, acionado por add_actions('add_meta_boxes').
+      - Mas o melhor método é utilizando o plugin ACF (Advanced custom fields), ele é utilizado para criar campos customizados facilmente. Para usar basta instalar e ativar. Para criar um novo custom field basta acessar o ACF no painel `wp-admin`:
+        - Clicar em `Adicionar novo`
+        - Inserir as informações do novo campo como, rótulo, nome, valor padrão, obrigatoriedade e tipo de post em que será utilizado
+          - Detalhe: o campo `nome` é muito importante pois ele é o parâmetro que será utilizado para consultas e exibição em tela.
+        - Para acessar o custom field criado basta chamar o método get_field como no exemplo abaixo:
+          ```php
+            // Realiza uma consulta em um post_type que possui um custom field criado no ACF
+            $homepageEvents = new WP_Query($queryArrayEvent);
+            while($homepageEvents->have_posts()) { // Renderiza os posts do post_type 
+              /*
+                $homepageEvents->the_post(); ?>
+                Define o valor da variável Global POST para os demais métodos não precisarem utilizar o retorno da query
+              */
+              $homepageEvents->the_post(); ?>
+              <div class="event-summary">
+                <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
+                  <span class="event-summary__month">
+                    <?php 
+                      /*
+                        Contextualizado, o custom field criado foi uma data com o nome de event_date, o que acontece aqui é basicamente inserir essa data em um datetime para acessar seus métodos para formatação de data
+
+                        O get_field('event_date') captura a informação do custom field event_date daquela query especifica
+                      */
+                      $eventDate = new DateTime(get_field('event_date'));
+                      echo $eventDate->format('M');
+                    ?></span>
+                  <span class="event-summary__day">
+                    <?php 
+                      echo $eventDate->format('d');
+                    ?></span>
+                </a>
+              (...)
+          ```
 - Advanced content
   - Ajax Function wordpress
   - Gutenberg Blocks(outra maneira de fazer temas componentizados no wordpress)
@@ -488,10 +531,8 @@
   - Segurança do wordpress e vulnerabilidades comuns
   - Boas práticas de wordpress
 
-## Documentações
 
+## Documentações
 - Documentação Oficial:
   - [Documentação oficial do wordpress](https://developer.wordpress.org/).
 - Documentação Pessoal:
-  -
-```
